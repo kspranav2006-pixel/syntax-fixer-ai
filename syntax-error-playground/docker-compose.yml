@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  web:
+    image: python:3.11-slim
+    ports:
+      - "8080:8080"
+    environment:
+      DEBUG: 1
+      # Invalid YAML: key with no separator or malformed mapping
+      DATABASE_URL: postgres://localhost:5432
+      BROKEN_MAPPING
+        nested_field: 42
+    volumes:
+      - .:/app

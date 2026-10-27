@@ -1,0 +1,52 @@
+name: "SyntaxFixer AI - GitHub Syntax Check & Auto-Repair"
+
+on:
+  pull_request:
+    branches: [ main, master, develop ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  check-and-repair:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install SyntaxFixer AI Agent
+        run: |
+          pip install --upgrade pip
+          pip install -e .
+
+      - name: Scan Repository for Syntax Errors
+        id: scan
+        run: |
+          python -m syntax_agent.cli scan .
+
+      - name: Auto-Repair Syntax Errors (if any found)
+        if: failure()
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python -m syntax_agent.cli fix . \
+            --provider gemini \
+            --branch \
+            --commit \
+            --push \
+            --pr

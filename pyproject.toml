@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "syntax-agent"
+version = "1.0.0"
+description = "AI Agent for detecting and repairing syntax errors in GitHub repositories with AST verification."
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [
+    { name = "SyntaxFixer Team" }
+]
+dependencies = [
+    "typer>=0.9.0",
+    "rich>=13.0.0",
+    "pydantic>=2.0.0",
+    "httpx>=0.25.0",
+    "pyyaml>=6.0.0",
+    "fastapi>=0.100.0",
+    "uvicorn>=0.20.0",
+    "python-dotenv>=1.0.0",
+    "google-genai>=0.1.0",
+]
+
+[project.scripts]
+syntax-agent = "syntax_agent.cli:app"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["syntax_agent*"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

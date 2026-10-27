@@ -1,0 +1,9 @@
+{
+  "name": "sample-project",
+  "version": "1.0.0",
+  "description": "A sample project with syntax errors",
+  "keywords": [
+    "syntax",
+    "repair",
+  ],
+}
